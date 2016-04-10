@@ -5,18 +5,15 @@ elasticsearch:
     - "9200:9200"
     - "9300:9300"
 logstash:
-  image: logstash:latest
-  command: logstash -f /etc/logstash/conf.d/logstash.conf
-  volumes:
-    - ./logstash/config:/etc/logstash/conf.d
+  build: logstash/
   ports:
     - "5000:5000"
   links:
     - elasticsearch
+  environment:
+    - LS_HEAP_SIZE=128m
 kibana:
   build: kibana/
-  volumes:
-    - ./kibana/config/:/opt/kibana/config/
   ports:
     - "5601:5601"
   links:
